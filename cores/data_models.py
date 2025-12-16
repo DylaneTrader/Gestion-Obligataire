@@ -47,7 +47,11 @@ class Bond:
     currency: str = "EUR"
     
     def years_to_maturity(self, from_date: datetime = None) -> float:
-        """Calcule les années jusqu'à l'échéance"""
+        """
+        Calcule les années jusqu'à l'échéance
+        Note: Utilise une approximation de 365.25 jours par an.
+        Pour des calculs précis, utilisez les conventions de jour de marché (ACT/360, ACT/365, 30/360).
+        """
         if from_date is None:
             from_date = datetime.now()
         

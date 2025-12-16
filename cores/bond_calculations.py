@@ -29,9 +29,10 @@ def calculate_bond_price(
         Prix de l'obligation
     """
     if yield_rate == 0:
-        # Cas spécial: rendement nul
+        # Cas spécial: rendement nul - calculer la somme simple des flux
         coupon_payment = (face_value * coupon_rate) / frequency
-        return (coupon_payment * years_to_maturity * frequency) + face_value
+        total_coupons = coupon_payment * years_to_maturity * frequency
+        return total_coupons + face_value
     
     n_periods = int(years_to_maturity * frequency)
     coupon_payment = (face_value * coupon_rate) / frequency
@@ -92,11 +93,13 @@ def calculate_yield_to_maturity(
         derivative = (price_up - calculated_price) / delta
         
         if derivative == 0:
-            break
+            # Si la dérivée est nulle, retourner l'estimation courante
+            return ytm
         
         # Mise à jour selon Newton-Raphson
         ytm = ytm - (calculated_price - price) / derivative
     
+    # Si pas de convergence, retourner la meilleure estimation
     return ytm
 
 

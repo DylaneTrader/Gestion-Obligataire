@@ -253,7 +253,8 @@ with tab2:
                     
                     weight = pos.market_value() / total_value
                     weighted_duration += duration * weight
-                except:
+                except (ValueError, ZeroDivisionError, TypeError):
+                    # Ignorer les positions avec des erreurs de calcul
                     pass
         
         col1, col2, col3 = st.columns(3)
