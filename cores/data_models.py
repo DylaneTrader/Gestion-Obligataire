@@ -44,7 +44,7 @@ class Bond:
     bond_type: BondType = BondType.CORPORATE
     credit_rating: Optional[CreditRating] = None
     issuer: str = ""
-    currency: str = "EUR"
+    currency: str = "FCFA"
     
     def years_to_maturity(self, from_date: datetime = None) -> float:
         """
@@ -99,7 +99,7 @@ class Portfolio:
     """Portefeuille d'obligations"""
     name: str
     positions: List[BondPosition] = field(default_factory=list)
-    currency: str = "EUR"
+    currency: str = "FCFA"
     
     def add_position(self, position: BondPosition):
         """Ajoute une position au portefeuille"""

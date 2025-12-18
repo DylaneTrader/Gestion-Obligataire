@@ -46,7 +46,7 @@ with tab1:
         st.subheader("Paramètres de l'Obligation")
         
         face_value = st.number_input(
-            "Valeur Nominale (€)",
+            "Valeur Nominale (FCFA)",
             min_value=100.0,
             max_value=10000000.0,
             value=1000.0,
@@ -107,13 +107,13 @@ with tab1:
         # Affichage des métriques
         st.metric(
             "Prix de l'Obligation",
-            f"{price:.2f} €",
-            f"{premium_discount:.2f} €"
+            f"{price:.2f} FCFA",
+            f"{premium_discount:.2f} FCFA"
         )
         
         col_a, col_b = st.columns(2)
         with col_a:
-            st.metric("Valeur Nominale", f"{face_value:.2f} €")
+            st.metric("Valeur Nominale", f"{face_value:.2f} FCFA")
             st.metric("Rendement Courant", f"{current_yield*100:.2f}%")
         
         with col_b:
@@ -124,8 +124,8 @@ with tab1:
         # Information supplémentaire
         st.info(f"""
         **Interprétation:**
-        - Coupon total annuel: {face_value * coupon_rate:.2f} €
-        - Paiement par période: {(face_value * coupon_rate) / frequency:.2f} €
+        - Coupon total annuel: {face_value * coupon_rate:.2f} FCFA
+        - Paiement par période: {(face_value * coupon_rate) / frequency:.2f} FCFA
         - Nombre de paiements: {int(years_to_maturity * frequency)}
         """)
         
@@ -147,7 +147,7 @@ with tab2:
         st.subheader("Paramètres")
         
         face_value_full = st.number_input(
-            "Valeur Nominale (€)",
+            "Valeur Nominale (FCFA)",
             min_value=100.0,
             max_value=10000000.0,
             value=1000.0,
@@ -229,7 +229,7 @@ with tab2:
                 "Convexité"
             ],
             "Valeur": [
-                f"{price_full:.2f} €",
+                f"{price_full:.2f} FCFA",
                 f"{current_yield_full*100:.2f}%",
                 f"{yield_rate_full*100:.2f}%",
                 f"{mac_duration:.4f} ans",
@@ -278,22 +278,22 @@ with tab2:
         with col_a:
             st.metric(
                 "Approx. Duration",
-                f"{price_full + price_change_duration:.2f} €",
-                f"{price_change_duration:.2f} €"
+                f"{price_full + price_change_duration:.2f} FCFA",
+                f"{price_change_duration:.2f} FCFA"
             )
         
         with col_b:
             st.metric(
                 "Approx. Duration+Convexité",
-                f"{price_full + price_change_convexity:.2f} €",
-                f"{price_change_convexity:.2f} €"
+                f"{price_full + price_change_convexity:.2f} FCFA",
+                f"{price_change_convexity:.2f} FCFA"
             )
         
         with col_c:
             st.metric(
                 "Prix Exact",
-                f"{price_exact:.2f} €",
-                f"{price_change_exact:.2f} €"
+                f"{price_exact:.2f} FCFA",
+                f"{price_change_exact:.2f} FCFA"
             )
 
 # --- TAB 3: COURBE DE PRIX ---
@@ -307,7 +307,7 @@ with tab3:
         st.subheader("Paramètres de Base")
         
         face_value_curve = st.number_input(
-            "Valeur Nominale (€)",
+            "Valeur Nominale (FCFA)",
             min_value=100.0,
             value=1000.0,
             step=100.0,
@@ -381,7 +381,7 @@ with tab3:
             fig.update_layout(
                 title='Prix de l\'Obligation en fonction du Rendement',
                 xaxis_title='Rendement (%)',
-                yaxis_title='Prix (€)',
+                yaxis_title='Prix (FCFA)',
                 hovermode='x unified'
             )
         
@@ -417,7 +417,7 @@ with tab3:
             fig.update_layout(
                 title='Prix de l\'Obligation en fonction de la Maturité',
                 xaxis_title='Années jusqu\'à l\'Échéance',
-                yaxis_title='Prix (€)',
+                yaxis_title='Prix (FCFA)',
                 hovermode='x unified'
             )
         
@@ -453,7 +453,7 @@ with tab3:
             fig.update_layout(
                 title='Prix de l\'Obligation en fonction du Taux de Coupon',
                 xaxis_title='Taux de Coupon (%)',
-                yaxis_title='Prix (€)',
+                yaxis_title='Prix (FCFA)',
                 hovermode='x unified'
             )
         
@@ -469,7 +469,7 @@ with tab4:
         st.subheader("Paramètres")
         
         face_value_cf = st.number_input(
-            "Valeur Nominale (€)",
+            "Valeur Nominale (FCFA)",
             min_value=100.0,
             value=1000.0,
             step=100.0,
@@ -528,8 +528,8 @@ with tab4:
             cf_data.append({
                 "Période": i,
                 "Date": date.strftime("%Y-%m-%d"),
-                "Flux (€)": f"{amount:.2f}",
-                "Valeur Actuelle (€)": f"{pv:.2f}"
+                "Flux (FCFA)": f"{amount:.2f}",
+                "Valeur Actuelle (FCFA)": f"{pv:.2f}"
             })
         
         df_cf = pd.DataFrame(cf_data)
@@ -538,8 +538,8 @@ with tab4:
         # Graphique des flux
         st.markdown("---")
         
-        amounts = [float(row["Flux (€)"]) for row in cf_data]
-        pvs = [float(row["Valeur Actuelle (€)"]) for row in cf_data]
+        amounts = [float(row["Flux (FCFA)"]) for row in cf_data]
+        pvs = [float(row["Valeur Actuelle (FCFA)"]) for row in cf_data]
         periods = [row["Période"] for row in cf_data]
         
         fig = go.Figure()
@@ -561,7 +561,7 @@ with tab4:
         fig.update_layout(
             title='Flux de Trésorerie et Valeurs Actuelles',
             xaxis_title='Période',
-            yaxis_title='Montant (€)',
+            yaxis_title='Montant (FCFA)',
             barmode='group',
             hovermode='x unified'
         )
@@ -574,9 +574,9 @@ with tab4:
         
         col_a, col_b = st.columns(2)
         with col_a:
-            st.metric("Total des Flux", f"{total_cf:.2f} €")
+            st.metric("Total des Flux", f"{total_cf:.2f} FCFA")
         with col_b:
-            st.metric("Total Valeur Actuelle", f"{total_pv:.2f} €")
+            st.metric("Total Valeur Actuelle", f"{total_pv:.2f} FCFA")
 
 # Pied de page
 st.markdown("---")
