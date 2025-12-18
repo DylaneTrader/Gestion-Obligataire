@@ -25,7 +25,7 @@ st.markdown("### Gestion et analyse de votre portefeuille obligataire")
 
 # Initialiser le portefeuille dans la session
 if st.session_state.portfolio is None:
-    st.session_state.portfolio = Portfolio(name="Mon Portefeuille", currency="FCFA")
+    st.session_state.portfolio = Portfolio(name="Mon Portefeuille", currency="EUR")
 
 portfolio = st.session_state.portfolio
 
@@ -55,14 +55,14 @@ with tab1:
         with col2:
             st.metric(
                 "Valeur Comptable",
-                f"{portfolio.total_book_value():,.2f} FCFA"
+                f"{portfolio.total_book_value():,.2f} €"
             )
         
         with col3:
             market_value = portfolio.total_market_value()
             st.metric(
                 "Valeur de Marché",
-                f"{market_value:,.2f} FCFA"
+                f"{market_value:,.2f} €"
             )
         
         with col4:
@@ -70,7 +70,7 @@ with tab1:
             st.metric(
                 "P&L Non Réalisé",
                 f"{pnl_pct:.2f}%",
-                f"{portfolio.total_unrealized_pnl():,.2f} FCFA"
+                f"{portfolio.total_unrealized_pnl():,.2f} €"
             )
         
         st.markdown("---")
@@ -85,11 +85,11 @@ with tab1:
                 "ISIN": pos.bond.isin,
                 "Type": pos.bond.bond_type.value,
                 "Quantité": pos.quantity,
-                "Prix d'Achat": f"{pos.purchase_price:.2f} FCFA",
-                "Prix Actuel": f"{pos.current_price:.2f} FCFA" if pos.current_price else "N/A",
-                "Valeur Comptable": f"{pos.book_value():,.2f} FCFA",
-                "Valeur de Marché": f"{pos.market_value():,.2f} FCFA",
-                "P&L": f"{pos.unrealized_pnl():,.2f} FCFA",
+                "Prix d'Achat": f"{pos.purchase_price:.2f} €",
+                "Prix Actuel": f"{pos.current_price:.2f} €" if pos.current_price else "N/A",
+                "Valeur Comptable": f"{pos.book_value():,.2f} €",
+                "Valeur de Marché": f"{pos.market_value():,.2f} €",
+                "P&L": f"{pos.unrealized_pnl():,.2f} €",
                 "P&L %": f"{pos.unrealized_pnl_percent():.2f}%",
                 "Échéance": pos.bond.maturity_date.strftime("%Y-%m-%d")
             })
@@ -158,7 +158,7 @@ with tab2:
             allocation_df = pd.DataFrame([
                 {
                     "Type": k,
-                    "Valeur": f"{v:,.2f} FCFA",
+                    "Valeur": f"{v:,.2f} €",
                     "Pourcentage": f"{(v/portfolio.total_market_value())*100:.2f}%"
                 }
                 for k, v in type_allocation.items()
@@ -217,7 +217,7 @@ with tab2:
             size="Valeur",
             hover_data=["Nom"],
             title="Distribution par Maturité",
-            labels={"Années": "Années jusqu'à l'Échéance", "Valeur": "Valeur de Marché (FCFA)"}
+            labels={"Années": "Années jusqu'à l'Échéance", "Valeur": "Valeur de Marché (€)"}
         )
         
         fig_maturity.update_layout(height=400)
@@ -285,7 +285,7 @@ with tab3:
         bond_isin = st.text_input("Code ISIN", "FR0000000000")
         
         face_value = st.number_input(
-            "Valeur Nominale (FCFA)",
+            "Valeur Nominale (€)",
             min_value=100.0,
             max_value=100000.0,
             value=1000.0,
@@ -344,7 +344,7 @@ with tab3:
         )
         
         purchase_price = st.number_input(
-            "Prix d'Achat (FCFA)",
+            "Prix d'Achat (€)",
             min_value=1.0,
             max_value=100000.0,
             value=1000.0,
@@ -357,7 +357,7 @@ with tab3:
         )
         
         current_price = st.number_input(
-            "Prix Actuel (FCFA)",
+            "Prix Actuel (€)",
             min_value=1.0,
             max_value=100000.0,
             value=1000.0,
@@ -384,7 +384,7 @@ with tab3:
                 bond_type=bond_type,
                 credit_rating=credit_rating,
                 issuer=issuer,
-                currency="FCFA"
+                currency="EUR"
             )
             
             # Créer la position
@@ -407,15 +407,15 @@ with tab3:
         st.write(f"**Obligation:** {bond_name} ({bond_isin})")
         st.write(f"**Émetteur:** {issuer}")
         st.write(f"**Type:** {bond_type.value}")
-        st.write(f"**Valeur Nominale:** {face_value:.2f} FCFA")
+        st.write(f"**Valeur Nominale:** {face_value:.2f} €")
         st.write(f"**Coupon:** {coupon_rate*100:.2f}%")
         st.write(f"**Quantité:** {quantity}")
-        st.write(f"**Valeur Comptable:** {quantity * purchase_price:,.2f} FCFA")
-        st.write(f"**Valeur de Marché:** {quantity * current_price:,.2f} FCFA")
+        st.write(f"**Valeur Comptable:** {quantity * purchase_price:,.2f} €")
+        st.write(f"**Valeur de Marché:** {quantity * current_price:,.2f} €")
         
         pnl = (current_price - purchase_price) * quantity
         pnl_pct = ((current_price - purchase_price) / purchase_price) * 100
-        st.write(f"**P&L:** {pnl:,.2f} FCFA ({pnl_pct:.2f}%)")
+        st.write(f"**P&L:** {pnl:,.2f} € ({pnl_pct:.2f}%)")
 
 # Pied de page
 st.markdown("---")
