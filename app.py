@@ -41,9 +41,63 @@ def main():
     <div class="info-box">
         <h4>Bienvenue dans l'application de Gestion Obligataire</h4>
         <p>Cette application vous permet d'analyser des obligations, de calculer leurs métriques financières
-        et de gérer un portefeuille obligataire complet.</p>
+        et de gérer un portefeuille obligataire complet. Toutes les valeurs sont exprimées en FCFA.</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Section d'aperçu de données
+    st.markdown("---")
+    st.header("📂 Aperçu des Données")
+    
+    uploaded_file = st.file_uploader(
+        "Charger un fichier Excel avec plusieurs feuilles",
+        type=['xlsx', 'xls'],
+        help="Chargez un classeur Excel contenant plusieurs feuilles de données"
+    )
+    
+    if uploaded_file is not None:
+        try:
+            # Lire toutes les feuilles du fichier
+            excel_file = pd.ExcelFile(uploaded_file)
+            sheet_names = excel_file.sheet_names
+            
+            # Filtre de sélection de feuille
+            selected_sheet = st.selectbox(
+                "Sélectionner une feuille",
+                options=sheet_names,
+                help="Choisissez la feuille à visualiser"
+            )
+            
+            # Lire et afficher la feuille sélectionnée
+            df = pd.read_excel(uploaded_file, sheet_name=selected_sheet)
+            
+            st.subheader(f"Aperçu de la feuille: {selected_sheet}")
+            
+            # Informations sur les données
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Nombre de lignes", df.shape[0])
+            with col2:
+                st.metric("Nombre de colonnes", df.shape[1])
+            with col3:
+                st.metric("Feuille active", selected_sheet)
+            
+            # Afficher le dataframe
+            st.dataframe(df, use_container_width=True)
+            
+            # Option pour télécharger la feuille sélectionnée en CSV
+            csv = df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Télécharger en CSV",
+                data=csv,
+                file_name=f"{selected_sheet}.csv",
+                mime="text/csv"
+            )
+            
+        except Exception as e:
+            st.error(f"Erreur lors de la lecture du fichier: {str(e)}")
+    else:
+        st.info("👆 Veuillez charger un fichier Excel pour afficher un aperçu des données")
     
     # Section des fonctionnalités principales
     st.markdown("---")
@@ -99,7 +153,7 @@ def main():
         
         with col1:
             face_value = st.number_input(
-                "Valeur nominale (€)",
+                "Valeur nominale (FCFA)",
                 min_value=100.0,
                 max_value=1000000.0,
                 value=1000.0,
@@ -170,7 +224,7 @@ def main():
             col1, col2, col3 = st.columns(3)
             
             with col1:
-                st.metric("Prix de l'obligation", f"{price:.2f} €")
+                st.metric("Prix de l'obligation", f"{price:.2f} FCFA")
                 st.metric("Rendement courant", f"{current_yield*100:.2f}%")
             
             with col2:
@@ -214,7 +268,7 @@ def main():
             fig.update_layout(
                 title='Prix de l\'obligation vs Rendement',
                 xaxis_title='Rendement (%)',
-                yaxis_title='Prix (€)',
+                yaxis_title='Prix (FCFA)',
                 hovermode='x unified',
                 height=400
             )

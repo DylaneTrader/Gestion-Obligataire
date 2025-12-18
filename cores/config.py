@@ -44,13 +44,13 @@ PAYMENT_FREQUENCIES = {
 }
 
 # Devises supportées
-CURRENCIES = ["EUR", "USD", "GBP", "CHF", "JPY"]
+CURRENCIES = ["FCFA", "EUR", "USD", "GBP", "CHF", "JPY"]
 
 # Format de nombres
 NUMBER_FORMAT = {
     "price": "{:,.2f}",
     "percentage": "{:.2f}%",
-    "currency": "{:,.2f} €",
+    "currency": "{:,.2f} FCFA",
     "duration": "{:.4f}",
     "convexity": "{:.4f}"
 }
