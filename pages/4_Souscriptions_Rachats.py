@@ -228,6 +228,8 @@ with tab2:
                 time_series['CV_4w'] = (time_series['Std_4w'] / time_series['MA_4w'].abs()) * 100
                 
                 # Calculer les bandes de Bollinger
+                # Les bandes de Bollinger offrent une meilleure visualisation de la volatilité que le CV mobile
+                # car elles montrent la dispersion autour de la tendance et permettent d'identifier les valeurs extrêmes
                 time_series['Upper_Band'] = time_series['MA_4w'] + (2 * time_series['Std_4w'])
                 time_series['Lower_Band'] = time_series['MA_4w'] - (2 * time_series['Std_4w'])
                 
@@ -426,7 +428,11 @@ with tab3:
                 min_month = monthly_data.loc[monthly_data[metric_choice].idxmin(), 'Mois_Nom']
                 max_value = monthly_data[metric_choice].max()
                 min_value = monthly_data[metric_choice].min()
-                variation = ((max_value - min_value) / mean_value * 100) if mean_value != 0 else 0
+                # Protection contre division par zéro et valeurs très petites
+                if abs(mean_value) > 0.01:
+                    variation = ((max_value - min_value) / abs(mean_value) * 100)
+                else:
+                    variation = 0
                 
                 metric_name = {'Souscriptions': 'des souscriptions', 'Rachats': 'des rachats', 'Flux_Net': 'des flux nets'}[metric_choice]
                 fcp_text = selected_fcp_seas if selected_fcp_seas != 'Tous les FCP' else 'tous les FCP'

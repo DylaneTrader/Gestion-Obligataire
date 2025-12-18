@@ -42,7 +42,7 @@ if uploaded_file is not None:
             
             st.markdown("""
             <div class="info-box">
-                <p><strong>Sélection FCP :</strong> Aucune sélection = Tous les FCP analysés</p>
+                <p><strong>Sélection FCP :</strong> Si aucun FCP n'est sélectionné, tous les FCP sont analysés par défaut</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -183,7 +183,9 @@ if uploaded_file is not None:
                         volatilite = df_fcp['Rendement'].std()
                         
                         # Ratio de Sharpe simplifié (rendement / volatilité)
-                        sharpe = rendement_moyen / volatilite if volatilite != 0 else 0
+                        # Note: Pour un calcul précis, il faudrait soustraire le taux sans risque
+                        # Sharpe = (rendement - taux_sans_risque) / volatilité
+                        sharpe = rendement_moyen / volatilite if volatilite > 0.0001 else 0
                         
                         performance_list.append({
                             'FCP': fcp,
